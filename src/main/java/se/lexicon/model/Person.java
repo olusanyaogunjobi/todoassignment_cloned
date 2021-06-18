@@ -6,12 +6,20 @@ public class Person {
     private int personId;
     private String firstName;
     private String lastName;
+    private String email;
+
 
     public Person( String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
         personId=++counter;
+    }
 
+    public Person( String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        personId=++counter;
     }
 
     public void setId(int id) {
@@ -36,5 +44,22 @@ public class Person {
 
     public String getLastName() {
         return lastName;
+    }
+//    public Person findById(int personId){
+//        if(this.personId==personId)
+//        return Person;
+//    }
+
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "personId=" + personId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
+    public void clear(){
+
     }
 }
