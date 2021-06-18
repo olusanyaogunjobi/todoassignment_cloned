@@ -18,10 +18,22 @@ public class People {
         System.out.println(Arrays.toString(Person2));
         return Person2;
     }
-    public String[]  findById(int personId){
-        if(persons.contains(personId))
 
-   }
+
+    // who's id do we want to find?
+    // Checking all persons in the array if id matches.
+    // return if you found it.
+    public Person findById(int personId){
+
+        for(Person person:persons){
+            if(person.getId()==personId){
+                return person;
+            }
+        }
+
+        return null;
+  }
+
     public void clear(){
          Arrays.fill(persons, null);
          System.out.println(Arrays.toString(persons));
