@@ -1,5 +1,7 @@
 package se.lexicon.model;
 
+import java.util.Arrays;
+
 public class Person {
     public static int counter=0;
 
@@ -45,10 +47,7 @@ public class Person {
     public String getLastName() {
         return lastName;
     }
-//    public Person findById(int personId){
-//        if(this.personId==personId)
-//        return Person;
-//    }
+
 
 
     @Override
@@ -59,7 +58,5 @@ public class Person {
                 ", lastName='" + lastName + '\'' +
                 '}';
     }
-    public void clear(){
 
-    }
 }
