@@ -2,20 +2,30 @@ package se.lexicon.model;
 
 
 public class Todo {
+    public static int idCounter=0;
 
     private int todoId;
-    public String description;
-    public boolean done;
+    private String description;
+    private boolean done;
     Person assignee;
 
     //constructor
 
 
-    public Todo(int todoId, String description) {
+    public Todo(String description,boolean done,Person assignee) {
         this.todoId = todoId;
         this.description = description;
+        this.assignee=assignee;
+        todoId=++idCounter;
     }
 
+    public void setAssignee(Person assignee) {
+        this.assignee = assignee;
+    }
+
+    public Person getAssignee() {
+        return assignee;
+    }
 
     public void setTodoId(int todoId) {
         this.todoId = todoId;
