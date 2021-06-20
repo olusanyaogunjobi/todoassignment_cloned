@@ -17,6 +17,7 @@ public class PersonTest {
         String expectedFirstName="testName";
         String expectedLastName="testLastName";
         String expectedEmail="d.ag@gmail.com";
+        int expectedId=1;
         int personId=++counter;
         //Act
         Person testObject=new Person("testName","testLastName","d.ag@gmail.com");
@@ -24,7 +25,8 @@ public class PersonTest {
         assertEquals("testName",testObject.getFirstName());
         assertEquals("testLastName",testObject.getLastName());
         assertEquals("d.ag@gmail.com",testObject.getEmail());
-        System.out.println("person ID is:"+Person.counter);
+        assertEquals(1,Person.counter);
+        //System.out.println("person ID is:"+Person.counter);
 
     }
 }
