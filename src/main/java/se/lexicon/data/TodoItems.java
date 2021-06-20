@@ -34,7 +34,37 @@ public int getSize(){
         Arrays.fill(whatTodo, null);
         System.out.println(Arrays.toString(whatTodo));
     }
+    public Todo[] findByDoneStatus(boolean doneStatus){
+
+        for(Todo todoItems:whatTodo){
+            if(todoItems.isDone()== doneStatus){
+                return findByDoneStatus(doneStatus);
+            }
+        }
+
+        return null;
+        }
+    public Todo[] findByAssignee(int personId){
+
+        for(Todo todoItems:whatTodo){
+            if(todoItems.getTodoId() == personId ){
+                return findByAssignee(personId);
+            }
+        }
+    return null;
+    }
+
+    public Todo[] findByAssignee(Person assignee){
+
+        for(Todo todoItems:whatTodo){
+            if(todoItems.getAssignee() == assignee ){
+            return findByAssignee(assignee);
+        }
+    }
+    return null;
+    }
 
 }
+
 
 
