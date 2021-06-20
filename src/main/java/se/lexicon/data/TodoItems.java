@@ -64,6 +64,22 @@ public int getSize(){
     return null;
     }
 
+    public Todo[] findUnassignedTodoItems(Person Unassigned) {
+
+
+        for (Todo todoItems : whatTodo) {
+            if (todoItems.getAssignee() == Unassigned) {
+
+                return findUnassignedTodoItems(Unassigned);
+
+            }
+
+        }
+        return null;
+    }
+
+
+
 }
 
 

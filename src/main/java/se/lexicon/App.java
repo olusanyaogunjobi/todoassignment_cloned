@@ -1,7 +1,10 @@
 package se.lexicon;
 
+import se.lexicon.data.TodoItems;
 import se.lexicon.model.Person;
 import se.lexicon.model.Todo;
+
+import java.util.Arrays;
 
 /**
  * Hello world!
@@ -21,6 +24,7 @@ public class App
 
         Todo newToDo=new Todo( "Java lecture", true,newPerson );
         System.out.println("toDo ID is:"+Todo.idCounter);
+
 
 
     }
