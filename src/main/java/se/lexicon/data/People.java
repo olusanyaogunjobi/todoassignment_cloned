@@ -176,7 +176,7 @@ public class People implements PeopleDao{
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         int rowsAffected = 0;
-        Person updatedBook = null;
+        Person updatedPerson = null;
 
         try{
             connection = MySQLConnection.getInstance().getConnection();

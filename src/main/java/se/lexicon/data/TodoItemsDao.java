@@ -10,12 +10,12 @@ public interface TodoItemsDao {
 Todo create (Todo todo);
 Collection<Todo> findAll();
 Todo findById(int todoId);
-Collection<Todo> findByDoneStatus(boolean done);
+boolean findByDoneStatus(boolean done);
 Collection<Todo> findByAssignee(int personId);
 Collection<Todo> findByAssignee(Person person);
-Collection<Todo>findByUnassignedTodoItems(int todoId);
+int findByUnassignedTodoItems(int todoId);
 Todo update(Todo todo);
-boolean deleteById(int personId);
+boolean deleteById(int todoId);
 
 
 }

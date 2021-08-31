@@ -32,21 +32,19 @@ public class TodoItems implements TodoItemsDao {
             preparedStatement.setString(3, todo.getDescription());
             preparedStatement.setObject(4, todo.getDeadline());
             preparedStatement.setBoolean(5, todo.isDone());
-            preparedStatement.setObject(6, todo.getAssignee().getPersonId());
+            preparedStatement.setInt(6, todo.getAssignee().getPersonId());
 
             rowsAffected = preparedStatement.executeUpdate();
 
             resultSet = preparedStatement.getGeneratedKeys();
 
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 todo.setTodoId(resultSet.getInt(1));
             }
 
-        }
-        catch (SQLIntegrityConstraintViolationException exception){
+        } catch (SQLIntegrityConstraintViolationException exception) {
             System.out.println("Can Not Create: Violation of Constraint");
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -82,15 +80,13 @@ public class TodoItems implements TodoItemsDao {
                                 resultSet.getInt("todo_id"),
                                 resultSet.getString("title"),
                                 resultSet.getString("description"),
-                                resultSet.getObject(4, LocalDate.class),
+                                resultSet.getDate(4).toLocalDate(),
                                 resultSet.getBoolean("done"),
-                                resultSet.getObject(6, "assignee_i")
-
+                                null
                         )
-
                 );
             }
-        } catch (SQLException exception){
+        } catch (SQLException exception) {
             exception.printStackTrace();
         }
 
@@ -109,58 +105,229 @@ public class TodoItems implements TodoItemsDao {
             connection = MySQLConnection.getInstance().getConnection();
 
             preparedStatement = connection.prepareStatement(findById);
-            preparedStatement.setInt(1, todoId;
+            preparedStatement.setInt(1, todoId);
 
             resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()){
-                todoItemFound = new Person(
+            if (resultSet.next()) {
+                todoItemFound = new Todo(
                         resultSet.getInt("todo_id"),
                         resultSet.getString("title"),
                         resultSet.getString("description"),
-                        resultSet.,
-                        resultSet.getString("deadline")
-
+                        resultSet.getDate(4).toLocalDate(),
+                        resultSet.getBoolean("done"),
+                        null
                 );
+            
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return todoItemFound;
+    }
+
+    @Override
+    public boolean findByDoneStatus(boolean done)
+    {
+        String doneStatus = null;
+        String findByDoneStatus = "SELECT * FROM todo_item WHERE done = ?";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = MySQLConnection.getInstance().getConnection();
+
+            preparedStatement = connection.prepareStatement(findByDoneStatus);
+            preparedStatement.setBoolean(1, done);
+
+            resultSet = preparedStatement.executeQuery();
+
+            //if (resultSet.next()) {
+               if (doneStatus.equals(done)){
+                new Todo(
+                        resultSet.getInt("todo_id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getDate(4).toLocalDate(),
+                        resultSet.getBoolean("done"),
+                        null
+                );
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+
+    }
+
+    @Override
+    public Collection<Todo> findByAssignee(int personId) {
+        Todo todoItemFound = null;
+        String findById = "SELECT * FROM todo_item WHERE personId = ?";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = MySQLConnection.getInstance().getConnection();
+
+            preparedStatement = connection.prepareStatement(findById);
+            preparedStatement.setInt(1, personId);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if (todoItemFound.getTodoId()== personId ) {
+                new Todo(
+                        resultSet.getInt("todo_id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getDate(4).toLocalDate(),
+                        resultSet.getBoolean("done"),
+                        null
+                );
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return (Collection<Todo>) todoItemFound;
+
+    }
+
+    @Override
+    public Collection<Todo> findByAssignee(Person person) {
+        Todo todoItemFound = null;
+        String findById = "SELECT * FROM person WHERE assignee_id = ?";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = MySQLConnection.getInstance().getConnection();
+
+            preparedStatement = connection.prepareStatement(findById);
+            preparedStatement.setString(1, person.getFirstName());
+
+            resultSet = preparedStatement.executeQuery();
+
+            if (todoItemFound.getAssignee().equals(person) ) {
+                new Todo(
+                        resultSet.getInt("todo_id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getDate(4).toLocalDate(),
+                        resultSet.getBoolean("done"),
+                        null
+                );
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return (Collection<Todo>) todoItemFound;
+
+
+    }
+
+    @Override
+    public int findByUnassignedTodoItems(int todoId) {
+
+            Todo todoItemFound = null;
+            String findById = "SELECT * FROM todo_item WHERE todo_id = ?";
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+
+            try {
+                connection = MySQLConnection.getInstance().getConnection();
+
+                preparedStatement = connection.prepareStatement(findById);
+                preparedStatement.setInt(1, todoId);
+
+                resultSet = preparedStatement.executeQuery();
+
+                if (todoItemFound.getTodoId() != todoItemFound.getAssignee().getPersonId()) {
+                    new Todo(
+                            resultSet.getInt("todo_id"),
+                            resultSet.getString("title"),
+                            resultSet.getString("description"),
+                            resultSet.getDate(4).toLocalDate(),
+                            resultSet.getBoolean("done"),
+                            null
+                    );
+
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return todoItemFound.getTodoId();
+
+    }
+
+    @Override
+    public Todo update(Todo todo) {
+       
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        int rowsAffected = 0;
+        Todo updatedTodo = null;
+
+        try{
+            connection = MySQLConnection.getInstance().getConnection();
+            preparedStatement = connection.prepareStatement("UPDATE todo_items SET todo_id =?, title = ?, description = ?, deadline =?, done= ?, assignee_id = ?");
+            preparedStatement.setInt(1, todo.getTodoId());
+            preparedStatement.setString(2, todo.getTitle());
+            preparedStatement.setString(3, todo.getDescription());
+            preparedStatement.setObject(4, todo.getDeadline());
+            preparedStatement.setBoolean(5, todo.isDone());
+            preparedStatement.setInt(6, todo.getAssignee().getPersonId());
+
+            rowsAffected = preparedStatement.executeUpdate();
+
+            preparedStatement.close();
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+
+
+        if (rowsAffected >= 1){
+            return todo;
+        }else {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean deleteById(int todoId) {
+        String deleteById = "DELETE FROM todo_item WHERE todo_id = ?";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        boolean wasDeleted = false;
+
+        try {
+            connection = MySQLConnection.getInstance().getConnection();
+            preparedStatement = connection.prepareStatement(deleteById);
+            preparedStatement.setInt(1, todoId);
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return personFound;
-        return null;
-    }
+        return wasDeleted;
 
-    @Override
-    public Collection<Todo> findByDoneStatus(boolean done) {
-        return null;
-    }
-
-    @Override
-    public Collection<Todo> findByAssignee(int personId) {
-        return null;
-    }
-
-    @Override
-    public Collection<Todo> findByAssignee(Person person) {
-        return null;
-    }
-
-    @Override
-    public Collection<Todo> findByUnassignedTodoItems(int todoId) {
-        return null;
-    }
-
-    @Override
-    public Todo update(Todo todo) {
-        return null;
-    }
-
-    @Override
-    public boolean deleteById(int personId) {
-        return false;
     }
 
 
